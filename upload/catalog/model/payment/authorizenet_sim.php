@@ -1,7 +1,7 @@
 <?php 
 class ModelPaymentAuthorizeNetSim extends Model {
   	public function getMethod($address, $total) {
-		$this->language->load('payment/authorizenet_sim');
+		$this->load->language('payment/authorizenet_sim');
 		
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('authorizenet_sim_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 		
@@ -21,6 +21,7 @@ class ModelPaymentAuthorizeNetSim extends Model {
       		$method_data = array( 
         		'code'       => 'authorizenet_sim',
         		'title'      => $this->language->get('text_title'),
+				'terms'      => '',
 				'sort_order' => $this->config->get('authorizenet_sim_sort_order')
       		);
     	}
@@ -28,4 +29,3 @@ class ModelPaymentAuthorizeNetSim extends Model {
     	return $method_data;
   	}
 }
-?>

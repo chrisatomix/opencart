@@ -130,7 +130,7 @@ $response->setCompression($config->get('config_compression'));
 $registry->set('response', $response); 
 		
 // Cache
-$cache = new Cache();
+$cache = new Cache('file');
 $registry->set('cache', $cache); 
 
 // Session
@@ -194,7 +194,15 @@ $registry->set('language', $language);
 $registry->set('document', new Document()); 		
 
 // Customer
-$registry->set('customer', new Customer($registry));
+$customer = new Customer($registry);
+$registry->set('customer', $customer);
+
+// Customer Group
+if ($customer->isLogged()) {
+	$config->set('config_customer_group_id', $customer->getGroupId());
+} elseif (isset($session->data['guest'])) {
+	$config->set('config_customer_group_id', $session->data['guest']['customer_group_id']);
+}
 
 // Tracking Code
 if (isset($request->get['tracking'])) {
@@ -245,4 +253,3 @@ $controller->dispatch($action, new Action('error/not_found'));
 
 // Output
 $response->output();
-?>

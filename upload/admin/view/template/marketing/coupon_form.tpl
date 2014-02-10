@@ -1,5 +1,5 @@
-<?php echo $header; ?>
-<div id="content" class="container">
+<?php echo $header; ?><?php echo $menu; ?>
+<div id="content">
   <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -13,9 +13,9 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="pull-right">
-        <button type="submit" form="form-coupon" class="btn btn-primary"><i class="fa fa-check"></i> <?php echo $button_save; ?></button>
-        <a href="<?php echo $cancel; ?>" class="btn btn-danger"><i class="fa fa-times"></i> <?php echo $button_cancel; ?></a></div>
-      <h1 class="panel-title"><i class="fa fa-edit"></i> <?php echo $heading_title; ?></h1>
+        <button type="submit" form="form-coupon" class="btn btn-success"><i class="fa fa-check-circle"></i> <?php echo $button_save; ?></button>
+        <a href="<?php echo $cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i> <?php echo $button_cancel; ?></a></div>
+      <h1 class="panel-title"><i class="fa fa-pencil-square fa-lg"></i> <?php echo $heading_title; ?></h1>
     </div>
     <div class="panel-body">
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-coupon" class="form-horizontal">
@@ -126,7 +126,7 @@
               <div class="col-sm-10">
                 <input type="text" name="product" value="" placeholder="<?php echo $entry_product; ?>" id="input-product" class="form-control" />
                 <span class="help-block"><?php echo $help_product; ?></span>
-                <div id="coupon-product" class="well well-sm">
+                <div id="coupon-product" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($coupon_product as $coupon_product) { ?>
                   <div id="coupon-product<?php echo $coupon_product['product_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $coupon_product['name']; ?>
                     <input type="hidden" name="coupon_product[]" value="<?php echo $coupon_product['product_id']; ?>" />
@@ -140,7 +140,7 @@
               <div class="col-sm-10">
                 <input type="text" name="category" value="" placeholder="<?php echo $entry_category; ?>" id="input-category" class="form-control" />
                 <span class="help-block"><?php echo $help_category; ?></span> <br />
-                <div id="coupon-category" class="well well-sm">
+                <div id="coupon-category" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($coupon_category as $coupon_category) { ?>
                   <div id="coupon-category<?php echo $coupon_category['category_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $coupon_category['name']; ?>
                     <input type="hidden" name="coupon_category[]" value="<?php echo $coupon_category['category_id']; ?>" />
@@ -223,7 +223,7 @@ $('input[name=\'product\']').autocomplete({
 	}
 });
 
-$('#coupon-product').delegate('.fa-minus-sign', 'click', function() {
+$('#coupon-product').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 
@@ -252,7 +252,7 @@ $('input[name=\'category\']').autocomplete({
 	}	
 });
 
-$('#coupon-category').delegate('.fa-minus-sign', 'click', function() {
+$('#coupon-category').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 //--></script>

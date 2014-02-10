@@ -128,6 +128,10 @@ class ModelMarketingCoupon extends Model {
 		return $query->row['total'];
 	}	
 	
+	public function addCouponHistory($coupon_id, $order_id, $customer_id, $value) {
+		$this->db->query("INSERT INTO " . DB_PREFIX . "coupon_history SET coupon_id = '" . (int)$coupon_id . "', order_id = '" . (int)$order_id . "', customer_id = '" . (int)$customer_id . "', amount = '" . (float)$order_total['value'] . "', date_added = NOW()");
+	}	
+		
 	public function getCouponHistories($coupon_id, $start = 0, $limit = 10) {
 		if ($start < 0) {
 			$start = 0;
@@ -146,6 +150,5 @@ class ModelMarketingCoupon extends Model {
 	  	$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "coupon_history WHERE coupon_id = '" . (int)$coupon_id . "'");
 
 		return $query->row['total'];
-	}			
+	}
 }
-?>

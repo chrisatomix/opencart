@@ -42,7 +42,7 @@ $registry->set('db', $db);
 		
 // Settings
 $query = $db->query("SELECT * FROM " . DB_PREFIX . "setting WHERE store_id = '0'");
- 
+
 foreach ($query->rows as $setting) {
 	if (!$setting['serialized']) {
 		$config->set($setting['key'], $setting['value']);
@@ -108,7 +108,7 @@ $response->addHeader('Content-Type: text/html; charset=utf-8');
 $registry->set('response', $response); 
 
 // Cache
-$cache = new Cache();
+$cache = new Cache('file');
 $registry->set('cache', $cache); 
 
 // Session
@@ -167,4 +167,3 @@ $controller->dispatch($action, new Action('error/not_found'));
 
 // Output
 $response->output();
-?>

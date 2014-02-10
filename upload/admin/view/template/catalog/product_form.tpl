@@ -1,5 +1,5 @@
-<?php echo $header; ?>
-<div id="content" class="container">
+<?php echo $header; ?><?php echo $menu; ?>
+<div id="content">
   <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -13,9 +13,9 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="pull-right">
-        <button type="submit" form="form-product" class="btn btn-primary"><i class="fa fa-check"></i> <?php echo $button_save; ?></button>
-        <a href="<?php echo $cancel; ?>" class="btn btn-danger"><i class="fa fa-times"></i> <?php echo $button_cancel; ?></a></div>
-      <h1 class="panel-title"><i class="fa fa-edit"></i> <?php echo $heading_title; ?></h1>
+        <button type="submit" form="form-product" class="btn btn-success"><i class="fa fa-check-circle"></i> <?php echo $button_save; ?></button>
+        <a href="<?php echo $cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i> <?php echo $button_cancel; ?></a></div>
+      <h1 class="panel-title"><i class="fa fa-pencil-square fa-lg"></i> <?php echo $heading_title; ?></h1>
     </div>
     <div class="panel-body">
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-product" class="form-horizontal">
@@ -25,6 +25,7 @@
           <li><a href="#tab-links" data-toggle="tab"><?php echo $tab_links; ?></a></li>
           <li><a href="#tab-attribute" data-toggle="tab"><?php echo $tab_attribute; ?></a></li>
           <li><a href="#tab-option" data-toggle="tab"><?php echo $tab_option; ?></a></li>
+          <li><a href="#tab-profile" data-toggle="tab"><?php echo $tab_profile; ?></a></li>
           <li><a href="#tab-discount" data-toggle="tab"><?php echo $tab_discount; ?></a></li>
           <li><a href="#tab-special" data-toggle="tab"><?php echo $tab_special; ?></a></li>
           <li><a href="#tab-image" data-toggle="tab"><?php echo $tab_image; ?></a></li>
@@ -319,12 +320,9 @@
               <div class="col-sm-10">
                 <input type="text" name="category" value="" placeholder="<?php echo $entry_category; ?>" id="input-category" class="form-control" />
                 <span class="help-block"><?php echo $help_category; ?></span>
-                <div id="product-category" class="well well-sm">
+                <div id="product-category" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($product_categories as $product_category) { ?>
-                  <div id="product-category<?php echo $product_category['category_id']; ?>">
-                    <p>
-                      <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-minus-circle"></i></button>
-                      &nbsp;&nbsp;<?php echo $product_category['name']; ?></p>
+                  <div id="product-category<?php echo $product_category['category_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product_category['name']; ?>
                     <input type="hidden" name="product_category[]" value="<?php echo $product_category['category_id']; ?>" />
                   </div>
                   <?php } ?>
@@ -333,10 +331,10 @@
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label" for="input-filter"><?php echo $entry_filter; ?></label>
-              <div class="col-sm-10">
+              <div class="col-sm-5">
                 <input type="text" name="filter" value="" placeholder="<?php echo $entry_filter; ?>" id="input-filter" class="form-control" />
                 <span class="help-block"><?php echo $help_filter; ?></span>
-                <div id="product-filter" class="well well-sm">
+                <div id="product-filter" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($product_filters as $product_filter) { ?>
                   <div id="product-filter<?php echo $product_filter['filter_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product_filter['name']; ?>
                     <input type="hidden" name="product_filter[]" value="<?php echo $product_filter['filter_id']; ?>" />
@@ -379,11 +377,9 @@
               <div class="col-sm-10">
                 <input type="text" name="download" value="" placeholder="<?php echo $entry_download; ?>" id="input-download" class="form-control" />
                 <span class="help-block"><?php echo $help_download; ?></span>
-                <div id="product-download" class="well well-sm">
+                <div id="product-download" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($product_downloads as $product_download) { ?>
-                  <div id="product-download<?php echo $product_download['download_id']; ?>">
-                    <button type="button" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button>
-                    <?php echo $product_download['name']; ?>
+                  <div id="product-download<?php echo $product_download['download_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product_download['name']; ?>
                     <input type="hidden" name="product_download[]" value="<?php echo $product_download['download_id']; ?>" />
                   </div>
                   <?php } ?>
@@ -395,7 +391,7 @@
               <div class="col-sm-10">
                 <input type="text" name="related" value="" placeholder="<?php echo $entry_related; ?>" id="input-related" class="form-control" />
                 <span class="help-block"><?php echo $help_related; ?></span>
-                <div id="product-related" class="well well-sm">
+                <div id="product-related" class="well well-sm" style="height: 150px; overflow: auto;">
                   <?php foreach ($product_relateds as $product_related) { ?>
                   <div id="product-related<?php echo $product_related['product_id']; ?>"><i class="fa fa-minus-circle"></i> <?php echo $product_related['name']; ?>
                     <input type="hidden" name="product_related[]" value="<?php echo $product_related['product_id']; ?>" />
@@ -632,6 +628,52 @@
               </div>
             </div>
           </div>
+          <div class="tab-pane" id="tab-profile">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left"><?php echo $entry_profile; ?></td>
+                    <td class="text-left"><?php echo $entry_customer_group; ?></td>
+                    <td class="text-left"></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php $profile_count = 0; ?>
+                  <?php foreach ($product_profiles as $product_profile) { ?>
+                  <?php $profile_count++; ?>
+                  <tr id="profile-row<?php echo $profile_count; ?>">
+                    <td class="text-left"><select name="product_profiles[<?php echo $profile_count; ?>][profile_id]" class="form-control">
+                        <?php foreach ($profiles as $profile) { ?>
+                        <?php if ($profile['profile_id'] == $product_profile['profile_id']) { ?>
+                        <option value="<?php echo $profile['profile_id']; ?>" selected="selected"><?php echo $profile['name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $profile['profile_id']; ?>"><?php echo $profile['name']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select></td>
+                    <td class="text-left"><select name="product_profiles[<?php echo $profile_count; ?>][customer_group_id]" class="form-control">
+                        <?php foreach ($customer_groups as $customer_group) { ?>
+                        <?php if ($customer_group['customer_group_id'] == $product_profile['customer_group_id']) { ?>
+                        <option value="<?php echo $customer_group['customer_group_id']; ?>" selected="selected"><?php echo $customer_group['name']; ?></option>
+                        <?php } else { ?>
+                        <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo $customer_group['name']; ?></option>
+                        <?php } ?>
+                        <?php } ?>
+                      </select></td>
+                    <td class="text-left"><button type="button" onclick="$('#profile-row<?php echo $profile_count; ?>').remove()" class="btn btn-danger"><i class="fa fa-trash-o"></i> <?php echo $button_remove; ?></button></td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td class="text-left"><button type="button" onclick="addProfile()" class="btn btn-primary"><i class="fa fa-plus-circle"></i> <?php echo $button_add_profile; ?></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
           <div class="tab-pane" id="tab-discount">
             <div class="table-responsive">
               <table id="discount" class="table table-striped table-bordered table-hover">
@@ -776,7 +818,7 @@
                 <span class="help-block"><?php echo $help_points; ?></span></div>
             </div>
             <div class="table-responsive">
-              <table class="table table-striped table-bordered table-hover">
+              <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <td class="text-left"><?php echo $entry_customer_group; ?></td>
@@ -796,7 +838,7 @@
           </div>
           <div class="tab-pane" id="tab-design">
             <div class="table-responsive">
-              <table class="table table-striped table-bordered table-hover">
+              <table class="table table-bordered table-hover">
                 <thead>
                   <tr>
                     <td class="text-left"><?php echo $entry_store; ?></td>
@@ -900,7 +942,7 @@ $('input[name=\'category\']').autocomplete({
 	}
 });
 
-$('#product-category').delegate('.fa-minus-sign', 'click', function() {
+$('#product-category').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 
@@ -929,7 +971,7 @@ $('input[name=\'filter\']').autocomplete({
 	}	
 });
 
-$('#product-filter').delegate('.fa-minus-sign', 'click', function() {
+$('#product-filter').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 
@@ -958,7 +1000,7 @@ $('input[name=\'download\']').autocomplete({
 	}	
 });
 
-$('#product-download').delegate('.fa-minus-sign', 'click', function() {
+$('#product-download').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 
@@ -987,7 +1029,7 @@ $('input[name=\'related\']').autocomplete({
 	}	
 });
 
-$('#product-related').delegate('.fa-minus-sign', 'click', function() {
+$('#product-related').delegate('.fa-minus-circle', 'click', function() {
 	$(this).parent().remove();
 });
 //--></script> 
@@ -1206,7 +1248,7 @@ function addDiscount() {
 	html  = '<tr id="discount-row' + discount_row + '">'; 
     html += '  <td class="text-left"><select name="product_discount[' + discount_row + '][customer_group_id]" class="form-control">';
     <?php foreach ($customer_groups as $customer_group) { ?>
-    html += '    <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo $customer_group['name']; ?></option>';
+    html += '    <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo addslashes($customer_group['name']); ?></option>';
     <?php } ?>
     html += '  </select></td>';		
     html += '  <td class="text-right"><input type="text" name="product_discount[' + discount_row + '][quantity]" value="" placeholder="<?php echo $entry_quantity; ?>" class="form-control" /></td>';
@@ -1229,7 +1271,7 @@ function addSpecial() {
 	html  = '<tr id="special-row' + special_row + '">'; 
     html += '  <td class="text-left"><select name="product_special[' + special_row + '][customer_group_id]" class="form-control">';
     <?php foreach ($customer_groups as $customer_group) { ?>
-    html += '      <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo $customer_group['name']; ?></option>';
+    html += '      <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo addslashes($customer_group['name']); ?></option>';
     <?php } ?>
     html += '  </select></td>';		
     html += '  <td class="text-right"><input type="text" name="product_special[' + special_row + '][priority]" value="" placeholder="<?php echo $entry_priority; ?>" class="form-control" /></td>';
@@ -1257,6 +1299,36 @@ function addImage() {
 	$('#images tbody').append(html);
 	
 	image_row++;
+}
+//--></script> 
+<script type="text/javascript"><!--
+var profile_count = <?php echo $profile_count; ?>;
+
+function addProfile() {
+  profile_count++;
+
+  var html = '';
+  html += '<tr id="profile-row' + profile_count + '">';
+  html += '  <td class="left">';
+  html += '    <select name="product_profiles[' + profile_count + '][profile_id]" class="form-control">>';
+  <?php foreach ($profiles as $profile) { ?>
+    html += '      <option value="<?php echo $profile['profile_id']; ?>"><?php echo $profile['name']; ?></option>';
+  <?php } ?>
+  html += '    </select>';
+  html += '  </td>';
+  html += '  <td class="left">';
+  html += '    <select name="product_profiles[' + profile_count + '][customer_group_id]" class="form-control">>';
+  <?php foreach ($customer_groups as $customer_group) { ?>
+    html += '      <option value="<?php echo $customer_group['customer_group_id']; ?>"><?php echo $customer_group['name']; ?></option>';
+  <?php } ?>
+  html += '    <select>';
+  html += '  </td>';
+  html += '  <td class="left">';
+  html += '    <a onclick="$(\'#profile-row' + profile_count + '\').remove()" class="btn btn-danger"><i class="fa fa-trash-o"></i> <?php echo $button_remove; ?></a>';
+  html += '  </td>';
+  html += '</tr>';
+
+  $('#tab-profile table tbody').append(html);
 }
 //--></script> 
 <script type="text/javascript"><!--

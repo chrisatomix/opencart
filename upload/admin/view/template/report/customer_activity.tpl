@@ -1,5 +1,5 @@
-<?php echo $header; ?>
-<div id="content" class="container">
+<?php echo $header; ?><?php echo $menu; ?>
+<div id="content">
   <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -7,7 +7,7 @@
   </ul>
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h1 class="panel-title"><i class="fa fa-bar-chart-o"></i> <?php echo $heading_title; ?></h1>
+      <h1 class="panel-title"><i class="fa fa-bar-chart-o fa-lg"></i> <?php echo $heading_title; ?></h1>
     </div>
     <div class="panel-body">
       <div class="well">
@@ -36,11 +36,10 @@
         </div>
       </div>
       <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover">
+        <table class="table table-bordered">
           <thead>
             <tr>
-              <td class="text-left"><?php echo $column_customer; ?></td>
-              <td class="text-left"><?php echo $column_action; ?></td>
+              <td class="text-left"><?php echo $column_comment; ?></td>
               <td class="text-left"><?php echo $column_ip; ?></td>
               <td class="text-left"><?php echo $column_date_added; ?></td>
             </tr>
@@ -49,8 +48,7 @@
             <?php if ($activities) { ?>
             <?php foreach ($activities as $activity) { ?>
             <tr>
-              <td class="text-left"><?php echo $activity['customer']; ?></td>
-              <td class="text-left"><?php echo $activity['action']; ?></td>
+              <td class="text-left"><?php echo $activity['comment']; ?></td>
               <td class="text-left"><?php echo $activity['ip']; ?></td>
               <td class="text-left"><?php echo $activity['date_added']; ?></td>
             </tr>

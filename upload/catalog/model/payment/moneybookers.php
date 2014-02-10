@@ -1,7 +1,7 @@
 <?php 
 class ModelPaymentMoneybookers extends Model {
   	public function getMethod($address, $total) {
-		$this->language->load('payment/moneybookers');
+		$this->load->language('payment/moneybookers');
 		
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('moneybookers_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 		
@@ -21,6 +21,7 @@ class ModelPaymentMoneybookers extends Model {
       		$method_data = array( 
         		'code'       => 'moneybookers',
         		'title'      => $this->language->get('text_title'),
+				'terms'      => '',
 				'sort_order' => $this->config->get('moneybookers_sort_order')
       		);
     	}
@@ -28,4 +29,3 @@ class ModelPaymentMoneybookers extends Model {
     	return $method_data;
   	}
 }
-?>

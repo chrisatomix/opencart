@@ -1,5 +1,5 @@
-<?php echo $header; ?>
-<div id="content" class="container">
+<?php echo $header; ?><?php echo $menu; ?>
+<div id="content">
   <ul class="breadcrumb">
     <?php foreach ($breadcrumbs as $breadcrumb) { ?>
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -13,9 +13,9 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <div class="pull-right">
-        <button type="submit" form="form-latest" class="btn btn-primary"><i class="fa fa-check"></i> <?php echo $button_save; ?></button>
-        <a href="<?php echo $cancel; ?>" class="btn btn-danger"><i class="fa fa-times"></i> <?php echo $button_cancel; ?></a></div>
-      <h1 class="panel-title"><i class="fa fa-edit"></i> <?php echo $heading_title; ?></h1>
+        <button type="submit" form="form-latest" class="btn btn-success"><i class="fa fa-check-circle"></i> <?php echo $button_save; ?></button>
+        <a href="<?php echo $cancel; ?>" class="btn btn-default"><i class="fa fa-reply"></i> <?php echo $button_cancel; ?></a></div>
+      <h1 class="panel-title"><i class="fa fa-puzzle-piece fa-lg"></i> <?php echo $heading_title; ?></h1>
     </div>
     <div class="panel-body">
       <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-latest">
@@ -104,7 +104,7 @@ var module_row = <?php echo $module_row; ?>;
 function addModule() {	
 	html  = '<tr id="module-row' + module_row + '">';
 	html += '  <td class="text-left"><input type="text" name="latest_module[' + module_row + '][limit]" value="5" placeholder="<?php echo $entry_limit; ?>" class="form-control" /></td>';
-	html += '  <td class="text-left"><input type="text" name="latest_module[' + module_row + '][image_width]" value="80" placeholder="<?php echo $entry_width; ?>" class="form-control" /> <input type="text" name="latest_module[' + module_row + '][image_height]" value="80" placeholder="<?php echo $entry_height; ?>" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="latest_module[' + module_row + '][image_width]" value="200" placeholder="<?php echo $entry_width; ?>" class="form-control" /> <input type="text" name="latest_module[' + module_row + '][image_height]" value="200" placeholder="<?php echo $entry_height; ?>" class="form-control" /></td>';
 	html += '  <td class="text-left"><select name="latest_module[' + module_row + '][layout_id]" class="form-control">';
 	<?php foreach ($layouts as $layout) { ?>
 	html += '    <option value="<?php echo $layout['layout_id']; ?>"><?php echo addslashes($layout['name']); ?></option>';

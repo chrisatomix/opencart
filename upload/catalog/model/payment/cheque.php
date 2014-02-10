@@ -1,7 +1,7 @@
 <?php 
 class ModelPaymentCheque extends Model {
   	public function getMethod($address, $total) {
-		$this->language->load('payment/cheque');
+		$this->load->language('payment/cheque');
 		
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('cheque_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 		
@@ -21,6 +21,7 @@ class ModelPaymentCheque extends Model {
       		$method_data = array( 
         		'code'       => 'cheque',
         		'title'      => $this->language->get('text_title'),
+				'terms'      => '',
 				'sort_order' => $this->config->get('cheque_sort_order')
       		);
     	}
@@ -28,4 +29,3 @@ class ModelPaymentCheque extends Model {
     	return $method_data;
   	}
 }
-?>

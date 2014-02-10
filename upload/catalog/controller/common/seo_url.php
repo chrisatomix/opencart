@@ -44,7 +44,7 @@ class ControllerCommonSeoUrl extends Controller {
 				}
 			}
 			
-			if (!isset($this->request->get['route'])){
+			if (!isset($this->request->get['route'])) {
 				if (isset($this->request->get['product_id'])) {
 					$this->request->get['route'] = 'product/product';
 				} elseif (isset($this->request->get['path'])) {
@@ -57,7 +57,7 @@ class ControllerCommonSeoUrl extends Controller {
 			}
 			
 			if (isset($this->request->get['route'])) {
-				return $this->forward($this->request->get['route']);
+				return new Action($this->request->get['route']);
 			}
 		}
 	}
@@ -89,10 +89,16 @@ class ControllerCommonSeoUrl extends Controller {
 				
 						if ($query->num_rows) {
 							$url .= '/' . $query->row['keyword'];
-						}							
+						 } else {
+							$url = '';
+							
+							break;
+						}  							
 					}
 					
 					unset($data[$key]);
+				} elseif ($key == 'route' && $value == 'common/home') {
+					$url = '/';
 				}
 			}
 		}
@@ -118,4 +124,3 @@ class ControllerCommonSeoUrl extends Controller {
 		}
 	}	
 }
-?>

@@ -12,7 +12,7 @@ $(document).ready(function() {
 	$('#language a').on('click', function(e) {
 		e.preventDefault();
 		
-		$('#language input[name=\'currency_code\']').attr('value', $(this).attr('href'));
+		$('#language input[name=\'language_code\']').attr('value', $(this).attr('href'));
 	
 		$('#language').submit();
 	});	
@@ -36,8 +36,8 @@ $(document).ready(function() {
         }
     });
 
-	// Navigation - Columns
-	$('#menu .dropdown-menu').each(function(){
+	// Menu
+	$('#menu .dropdown-menu').each(function() {
 		var menu = $('#menu').offset();
 		var dropdown = $(this).parent().offset();
 		
@@ -47,38 +47,45 @@ $(document).ready(function() {
 			$(this).css('margin-left', '-' + (i + 5) + 'px');
 		}
 	});
-	
-	// every 3 product-thumbs gets put into .row div
-	$('.layout-row-3').each(function(){
-	var divs = $(this).children();
-	
-	for (var i = 0; i < divs.length; i+=3) {
-	divs.slice(i, i+3).wrapAll('<div class="row"></div>');
-	}
-	});
-	
-	// every 4 product-thumbs gets put into .row div
-	$('.layout-row-4').each(function(){
-	var divs = $(this).children();
-	
-	for (var i = 0; i < divs.length; i += 4) {
-	divs.slice(i, i+4).wrapAll("<div class='row'></div>");
-	}
-	});
-	
-	// change product-grid to product-list
+		
+	// product-list
 	$('#list-view').click(function() {
-		$('.product-grid').removeClass('product-grid').addClass('product-list');
+		$('#content .product-layout > .clearfix').remove();
 		
-		$('.product-thumb').addClass('clearfix');
+		$('#content .product-layout').attr('class', 'product-layout product-list col-xs-12');
+		
+		localStorage.setItem('display', 'list');
 	});
 	
-	// change product-list to product-grid
+	// product-grid
 	$('#grid-view').click(function() {
-		$('.product-list').removeClass('product-list').addClass('product-grid');
+		$('#content .product-layout > .clearfix').remove();
 		
-		$('.product-thumb').removeClass('clearfix');
+		// What a shame bootstrap does not take into account dynamically loaded columns
+		cols = $('#column-right, #column-left').length;
+		
+		if (cols == 2) {
+			$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-6 col-md-6 col-sm-12 col-xs-12');
+			
+			$('#content .product-layout:nth-child(2)').after('<div class="clearfix visible-md visible-sm"></div>');
+		} else if (cols == 1) {
+			$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-12');
+			
+			$('#content .product-layout:nth-child(3)').after('<div class="clearfix visible-lg"></div>');
+		} else {
+			$('#content .product-layout').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-6 col-xs-12');
+			
+			$('#content .product-layout:nth-child(4)').after('<div class="clearfix"></div>');
+		}
+		
+		 localStorage.setItem('display', 'grid');
 	});
+	
+	if (localStorage.getItem('display') == 'list') {
+		$('#list-view').trigger('click');
+	} else {
+		$('#grid-view').trigger('click');
+	}
 	
 	// tooltips on hover
 	$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
@@ -124,7 +131,7 @@ function addToCart(product_id, quantity) {
             }
             
             if (json['success']) {
-                $('.breadcrumb').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#content').parent().before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                 
                 $('#cart-total').html(json['total']);
                 
@@ -144,7 +151,7 @@ function addToWishList(product_id) {
             $('.alert').remove();
                         
             if (json['success']) {
-                $('.breadcrumb').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#content').parent().before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                 
                 $('#wishlist-total').html(json['total']);
                 
@@ -164,7 +171,7 @@ function addToCompare(product_id) {
             $('.alert').remove();
                         
             if (json['success']) {
-                $('.breadcrumb').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#content').parent().before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                 
                 $('#compare-total').html(json['total']);
                 

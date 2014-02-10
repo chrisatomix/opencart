@@ -8,15 +8,21 @@ class Mail {
 	protected $html;
 	protected $attachments = array();
 	public $protocol = 'mail';
-	public $hostname;
-	public $username;
-	public $password;
-	public $port = 25;
-	public $timeout = 5;
+	public $smtp_hostname;
+	public $smtp_username;
+	public $smtp_password;
+	public $smtp_port = 25;
+	public $smtp_timeout = 5;
 	public $newline = "\n";
 	public $verp = false;
 	public $parameter = '';
-
+	
+	public function __construct($config = array()) {
+		foreach ($config as $key => $value) {
+			$this->$key = $value;
+		}
+	}
+	
 	public function setTo($to) {
 		$this->to = html_entity_decode($to, ENT_QUOTES, 'UTF-8');
 	}
@@ -47,27 +53,27 @@ class Mail {
 
 	public function send() {
 		if (!$this->to) {
-			trigger_error('Error: E-Mail to required!');
+			error_log('Error: E-Mail to required!');
 			exit();
 		}
 
 		if (!$this->from) {
-			trigger_error('Error: E-Mail from required!');
+			error_log('Error: E-Mail from required!');
 			exit();
 		}
 
 		if (!$this->sender) {
-			trigger_error('Error: E-Mail sender required!');
+			error_log('Error: E-Mail sender required!');
 			exit();
 		}
 
 		if (!$this->subject) {
-			trigger_error('Error: E-Mail subject required!');
+			error_log('Error: E-Mail subject required!');
 			exit();
 		}
 
 		if ((!$this->text) && (!$this->html)) {
-			trigger_error('Error: E-Mail message required!');
+			error_log('Error: E-Mail message required!');
 			exit();
 		}
 
@@ -98,14 +104,14 @@ class Mail {
 		if (!$this->html) {
 			$message  = '--' . $boundary . $this->newline;
 			$message .= 'Content-Type: text/plain; charset="utf-8"' . $this->newline;
-			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline;
+			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline . $this->newline;
 			$message .= $this->text . $this->newline;
 		} else {
 			$message  = '--' . $boundary . $this->newline;
 			$message .= 'Content-Type: multipart/alternative; boundary="' . $boundary . '_alt"' . $this->newline . $this->newline;
 			$message .= '--' . $boundary . '_alt' . $this->newline;
 			$message .= 'Content-Type: text/plain; charset="utf-8"' . $this->newline;
-			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline;
+			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline . $this->newline;
 
 			if ($this->text) {
 				$message .= $this->text . $this->newline;
@@ -115,7 +121,7 @@ class Mail {
 
 			$message .= '--' . $boundary . '_alt' . $this->newline;
 			$message .= 'Content-Type: text/html; charset="utf-8"' . $this->newline;
-			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline;
+			$message .= 'Content-Transfer-Encoding: 8bit' . $this->newline . $this->newline;
 			$message .= $this->html . $this->newline;
 			$message .= '--' . $boundary . '_alt--' . $this->newline;
 		}
@@ -152,7 +158,7 @@ class Mail {
 			$handle = fsockopen($this->hostname, $this->port, $errno, $errstr, $this->timeout);
 
 			if (!$handle) {
-				trigger_error('Error: ' . $errstr . ' (' . $errno . ')');
+				error_log('Error: ' . $errstr . ' (' . $errno . ')');
 				exit();
 			} else {
 				if (substr(PHP_OS, 0, 3) != 'WIN') {
@@ -179,7 +185,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 220) {
-						trigger_error('Error: STARTTLS not accepted from server!');
+						error_log('Error: STARTTLS not accepted from server!');
 						exit();
 					}
 				}
@@ -198,7 +204,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 250) {
-						trigger_error('Error: EHLO not accepted from server!');
+						error_log('Error: EHLO not accepted from server!');
 						exit();
 					}
 
@@ -215,7 +221,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 334) {
-						trigger_error('Error: AUTH LOGIN not accepted from server!');
+						error_log('Error: AUTH LOGIN not accepted from server!');
 						exit();
 					}
 
@@ -232,7 +238,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 334) {
-						trigger_error('Error: Username not accepted from server!');
+						error_log('Error: Username not accepted from server!');
 						exit();
 					}
 
@@ -249,7 +255,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 235) {
-						trigger_error('Error: Password not accepted from server!');
+						error_log('Error: Password not accepted from server!');
 						exit();
 					}
 				} else {
@@ -266,7 +272,7 @@ class Mail {
 					}
 
 					if (substr($reply, 0, 3) != 250) {
-						trigger_error('Error: HELO not accepted from server!');
+						error_log('Error: HELO not accepted from server!');
 						exit();
 					}
 				}
@@ -288,7 +294,7 @@ class Mail {
 				}
 
 				if (substr($reply, 0, 3) != 250) {
-					trigger_error('Error: MAIL FROM not accepted from server!');
+					error_log('Error: MAIL FROM not accepted from server!');
 					exit();
 				}
 
@@ -306,7 +312,7 @@ class Mail {
 					}
 
 					if ((substr($reply, 0, 3) != 250) && (substr($reply, 0, 3) != 251)) {
-						trigger_error('Error: RCPT TO not accepted from server!');
+						error_log('Error: RCPT TO not accepted from server!');
 						exit();
 					}
 				} else {
@@ -324,7 +330,7 @@ class Mail {
 						}
 
 						if ((substr($reply, 0, 3) != 250) && (substr($reply, 0, 3) != 251)) {
-							trigger_error('Error: RCPT TO not accepted from server!');
+							error_log('Error: RCPT TO not accepted from server!');
 							exit();
 						}
 					}
@@ -343,7 +349,7 @@ class Mail {
 				}
 
 				if (substr($reply, 0, 3) != 354) {
-					trigger_error('Error: DATA not accepted from server!');
+					error_log('Error: DATA not accepted from server!');
 					exit();
 				}
 
@@ -378,7 +384,7 @@ class Mail {
 				}
 
 				if (substr($reply, 0, 3) != 250) {
-					trigger_error('Error: DATA not accepted from server!');
+					error_log('Error: DATA not accepted from server!');
 					exit();
 				}
 				
@@ -395,7 +401,7 @@ class Mail {
 				}
 
 				if (substr($reply, 0, 3) != 221) {
-					trigger_error('Error: QUIT not accepted from server!');
+					error_log('Error: QUIT not accepted from server!');
 					exit();
 				}
 
@@ -404,4 +410,3 @@ class Mail {
 		}
 	}
 }
-?>

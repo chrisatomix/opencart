@@ -38,6 +38,11 @@ $response = new Response();
 $response->addHeader('Content-Type: text/html; charset=UTF-8');
 $registry->set('response', $response);
 
+// Language
+$language = new Language();
+$language->load('english');	
+$registry->set('language', $language); 
+
 // Document
 $document = new Document();
 $registry->set('document', $document);
@@ -48,9 +53,9 @@ $upgrade = false;
 if (file_exists('../config.php')) {
 	if (filesize('../config.php') > 0) {
 		$upgrade = true;
-		
+
 		$lines = file(DIR_OPENCART . 'config.php');
-		
+
 		foreach ($lines as $line) {
 			if (strpos(strtoupper($line), 'DB_') !== false) {
 				eval($line);
@@ -76,4 +81,3 @@ $controller->dispatch($action, new Action('not_found'));
 
 // Output
 $response->output();
-?>
